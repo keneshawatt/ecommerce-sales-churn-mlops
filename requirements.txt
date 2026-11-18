@@ -1,0 +1,15 @@
+pandas
+sqlalchemy
+psycopg2-binary
+python-dotenv
+ucimlrepo
+streamlit
+plotly
+requests
+apache-airflow
+scikit-learn
+xgboost
+mlflow
+fastapi
+uvicorn
+scipy

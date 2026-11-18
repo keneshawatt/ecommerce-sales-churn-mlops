@@ -1,0 +1,14 @@
+# Streamlit dashboard container.
+# DATABASE_URL is NOT baked into the image; docker compose passes it in at run
+# time from your local .env file.
+FROM python:3.13-slim
+
+WORKDIR /app
+
+COPY dashboard/requirements.txt /app/dashboard/requirements.txt
+RUN pip install --no-cache-dir -r /app/dashboard/requirements.txt
+
+COPY dashboard/app.py /app/dashboard/app.py
+
+EXPOSE 8501
+CMD ["streamlit", "run", "dashboard/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

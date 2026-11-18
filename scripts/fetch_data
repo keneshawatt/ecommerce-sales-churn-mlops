@@ -1,0 +1,38 @@
+"""
+fetch_data.py
+-------------
+Fetches the UCI Online Retail dataset via the ucimlrepo API and writes
+a raw landing copy — satisfies "maintain a raw copy of the extracted data".
+
+Run:
+    python3 scripts/fetch_data.py
+"""
+import os
+from datetime import datetime 
+from ucimlrepo import fetch_ucirepo
+
+RAW_DIR = "data/raw"
+
+
+def main():
+    os.makedirs(RAW_DIR, exist_ok=True)
+
+    online_retail = fetch_ucirepo(id=352)
+    df = online_retail.data.original
+
+    print(f"Fetched {len(df)} rows, {len(df.columns)} columns")
+    print(df.head())
+
+    stamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    out_path = os.path.join(RAW_DIR, f"online_retail_{stamp}.csv")
+    df.to_csv(out_path, index=False)
+    print(f"Raw copy saved to {out_path}")
+
+    # Also save a stable-named copy for ingest.py to pick up
+    stable_path = os.path.join(RAW_DIR, "online_retail_latest.csv")
+    df.to_csv(stable_path, index=False)
+    print(f"Latest copy for ingest.py: {stable_path}")
+
+
+if __name__ == "__main__":
+    main()

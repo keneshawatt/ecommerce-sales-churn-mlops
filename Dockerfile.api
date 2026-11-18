@@ -1,0 +1,22 @@
+# Prediction API container.
+# Python 3.13 matches the local anaconda environment the model was trained in
+# (the model is saved with cloudpickle, which needs a matching Python version).
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Install the exact library versions MLflow recorded when the model was exported.
+COPY models/churn-model/requirements.txt /tmp/model-requirements.txt
+RUN pip install --no-cache-dir -r /tmp/model-requirements.txt \
+    && pip install --no-cache-dir fastapi "uvicorn[standard]" pandas
+
+# The exported model and the API code. No .env and no database credentials are
+# copied in: the API only needs the model folder.
+COPY models/churn-model /app/models/churn-model
+COPY mlops/api.py /app/mlops/api.py
+
+ENV MODEL_DIR=/app/models/churn-model
+ENV LOG_DIR=/app/logs
+
+EXPOSE 8000
+CMD ["uvicorn", "mlops.api:app", "--host", "0.0.0.0", "--port", "8000"]

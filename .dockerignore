@@ -1,0 +1,15 @@
+# Secrets and local state must never be copied into an image
+.env
+mlflow.db
+mlruns/
+logs/
+
+# Large or irrelevant for the containers
+data/
+dags/
+sql/
+docs/
+.git/
+__pycache__/
+*.pyc
+.venv/

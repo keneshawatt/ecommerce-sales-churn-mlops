@@ -1,0 +1,21 @@
+# --- secrets: never commit these ---
+.env
+*.env
+
+# --- local state, data and trained artifacts (recreated by the pipeline, see README) ---
+mlflow.db
+mlruns/
+data/
+logs/
+models/
+monitoring/
+submission/
+
+# --- Python and editor clutter ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
+etl.py.bak
